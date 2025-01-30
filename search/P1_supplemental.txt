@@ -1,13 +1,21 @@
 Answer questions marked as "QS"
 
 QS1.1:
-
+We use a stack when implementing DFS because we want to explore 
+all the children of a node before moving on to another node 
+that is in the same level. Stack is LIFO so we explore 
+children first before exploring sibling nodes.
 
 QS1.2:
+Yes this exploration order is what we expected. We expected 
+pacman to stay on the outer edge of the maze for DFS. Pacman 
+does not go to all explored areas on his way to the goal.
 
 
 QS2.1:
-
+We use a queue when implementing BFS because we want to explore 
+each level before the next level. In the queue its FIFO so each 
+level gets added then explored.
 
 QS3.1:
 

@@ -146,8 +146,60 @@ def depthFirstSearch(problem: SearchProblem):
 def breadthFirstSearch(problem: SearchProblem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    closed = set() #stores the nodes that we have seen
+    fringe = util.Queue() #stores the current node that has the state and moves that led up to it
+    node = (problem.getStartState(), []) #creates start node
+    fringe.push(node) #push start node onto stack
 
+    #Grabs the directions for the game
+    from game import Directions
+    s = Directions.SOUTH
+    w = Directions.WEST  
+    n = Directions.NORTH
+    e = Directions.EAST  
+
+    #Performs DFS
+    while(True):
+
+        #If stack is empty then failed
+        if fringe.isEmpty():
+            return []
+        
+        #Extracts information from the current node
+        state, moves = fringe.pop()
+
+        #Found goal and returns list of moves
+        if problem.isGoalState(state):
+            return moves
+
+        #Explores new node
+        if state not in closed:
+            #Adds to explored node list
+            closed.add(state)
+            
+            #Grabs succesors of current node
+            succesors = problem.getSuccessors(state)
+            #Stores variation of move list
+            temp = []
+
+            #Iterates over succesors
+            for child_state, choice, cost in succesors:
+
+                #Ensures we dont push already explored child nodes onto the stack
+                if child_state not in closed:
+
+                    #Converts the direction to a move
+                    if choice == 'South':
+                        temp = moves +[s]
+                    if choice == 'North':
+                        temp = moves +[n]
+                    if choice == 'West':
+                        temp = moves +[w]
+                    if choice == 'East':
+                        temp = moves +[e]
+                    
+                    #Adds new node to stack
+                    fringe.push((child_state, temp))
 def uniformCostSearch(problem: SearchProblem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
