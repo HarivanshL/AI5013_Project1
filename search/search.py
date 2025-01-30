@@ -88,48 +88,60 @@ def depthFirstSearch(problem: SearchProblem):
     """
     "*** YOUR CODE HERE ***"
     
-    print("Start:", problem.getStartState())
-    print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
-    #util.raiseNotDefined()
-    closed = set()
-    fringe = util.Stack()
-    node = (problem.getStartState(), '', 0)
-    fringe.push(node)
-    temp_path = util.Stack()
-    while(True):
-        if fringe.isEmpty():
-            return []
-        node = fringe.pop()
-        print("Current State: ", node[0])
-        temp_path.push(node[1])
-        if problem.isGoalState(node):
-            break
-            #return node
-        if node not in closed:
-            closed.add(node)
-            
-            succesors = problem.getSuccessors(node[0])
-            #if len(succesors) ==0:
-            #    temp_path.pop()
-            for child in succesors:
-                fringe.push(child)
-    final_path = []
+    closed = set() #stores the nodes that we have seen
+    fringe = util.Stack() #stores the current node that has the state and moves that led up to it
+    node = (problem.getStartState(), []) #creates start node
+    fringe.push(node) #push start node onto stack
+
+    #Grabs the directions for the game
     from game import Directions
     s = Directions.SOUTH
     w = Directions.WEST  
     n = Directions.NORTH
     e = Directions.EAST  
-    while(not temp_path.isEmpty()):
-        path = temp_path.pop()
-        if path == 'South':
-            final_path.append[s]
-        if path == 'North':
-            final_path.append[n]
-        if path == 'West':
-            final_path.append[w]
-        if path == 'East':
-            final_path.append[e]
-    return final_path[::-1]
+
+    #Performs DFS
+    while(True):
+
+        #If stack is empty then failed
+        if fringe.isEmpty():
+            return []
+        
+        #Extracts information from the current node
+        state, moves = fringe.pop()
+
+        #Found goal and returns list of moves
+        if problem.isGoalState(state):
+            return moves
+
+        #Explores new node
+        if state not in closed:
+            #Adds to explored node list
+            closed.add(state)
+            
+            #Grabs succesors of current node
+            succesors = problem.getSuccessors(state)
+            #Stores variation of move list
+            temp = []
+
+            #Iterates over succesors
+            for child_state, choice, cost in succesors:
+
+                #Ensures we dont push already explored child nodes onto the stack
+                if child_state not in closed:
+
+                    #Converts the direction to a move
+                    if choice == 'South':
+                        temp = moves +[s]
+                    if choice == 'North':
+                        temp = moves +[n]
+                    if choice == 'West':
+                        temp = moves +[w]
+                    if choice == 'East':
+                        temp = moves +[e]
+                    
+                    #Adds new node to stack
+                    fringe.push((child_state, temp))
 
 def breadthFirstSearch(problem: SearchProblem):
     """Search the shallowest nodes in the search tree first."""
