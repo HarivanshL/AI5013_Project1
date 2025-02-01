@@ -150,7 +150,7 @@ def breadthFirstSearch(problem: SearchProblem):
     closed = set() #stores the nodes that we have seen
     fringe = util.Queue() #stores the current node that has the state and moves that led up to it
     node = (problem.getStartState(), []) #creates start node
-    fringe.push(node) #push start node onto stack
+    fringe.push(node) #push start node into queue
 
     #Grabs the directions for the game
     from game import Directions
@@ -207,9 +207,9 @@ def uniformCostSearch(problem: SearchProblem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
     closed = set() #stores the nodes that we have seen
-    fringe = util.Queue() #stores the current node that has the state and moves that led up to it
-    node = ((problem.getStartState(), []), 0) #creates start node
-    fringe.push(node) #push start node onto stack
+    fringe = util.PriorityQueue() #stores the current node that has the state and moves that led up to it
+    node = (problem.getStartState(), []) #creates start node
+    fringe.push(node, 0) #push start node and cost into priority queue
 
     #Grabs the directions for the game
     from game import Directions
@@ -226,7 +226,8 @@ def uniformCostSearch(problem: SearchProblem):
             return []
         
         #Extracts information from the current node
-        (state, moves), previous_cost = fringe.pop()
+        state, moves = fringe.pop()
+
 
         #Found goal and returns list of moves
         if problem.isGoalState(state):
@@ -249,20 +250,22 @@ def uniformCostSearch(problem: SearchProblem):
             for child_state, choice, cost in succesors:
 
                 #Ensures we dont push already explored child nodes onto the stack
+                    #Converts the direction to a move
+                if choice == 'South':
+                    temp = moves +[s]
+                if choice == 'North':
+                    temp = moves +[n]
+                if choice == 'West':
+                    temp = moves +[w]
+                if choice == 'East':
+                    temp = moves +[e]
+                
                 if child_state not in closed:
 
-                    #Converts the direction to a move
-                    if choice == 'South':
-                        temp = moves +[s]
-                    if choice == 'North':
-                        temp = moves +[n]
-                    if choice == 'West':
-                        temp = moves +[w]
-                    if choice == 'East':
-                        temp = moves +[e]
-                    
                     #Adds new node to stack
-                    fringe.push(((child_state, temp), previous_cost + cost))
+                    fringe.push((child_state, temp), cost)
+                else:
+                    fringe.update((child_state, temp), cost)
 
 def nullHeuristic(state, problem=None):
     """
