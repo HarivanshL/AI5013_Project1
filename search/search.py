@@ -194,10 +194,10 @@ def uniformCostSearch(problem: SearchProblem):
         
         #Extracts information from the current node
         state, moves, cost= fringe.pop()
-        del fringe_states[state]
 
         #Found goal and returns list of moves
         if problem.isGoalState(state):
+            print(f"Cost: {cost}")
             return moves
 
         #Explores new node
