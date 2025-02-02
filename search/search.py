@@ -180,15 +180,10 @@ def uniformCostSearch(problem: SearchProblem):
     "*** YOUR CODE HERE ***"
     closed = set() #stores the nodes that we have seen
     fringe = util.PriorityQueue() #stores the current node that has the state and moves that led up to it along with cost
-    node = (problem.getStartState(), []) #creates start node
+    node = (problem.getStartState(), [], 0) #creates start node with cost
     fringe.push(node, 0) #push start node and cost into priority queue
 
-    #Grabs the directions for the game
-    from game import Directions
-    s = Directions.SOUTH
-    w = Directions.WEST  
-    n = Directions.NORTH
-    e = Directions.EAST  
+    fringe_states = {problem.getStartState(): 0} # dictionary for tracking the cost of nodes in fringe
 
     #Performs DFS
     while(True):
@@ -198,8 +193,8 @@ def uniformCostSearch(problem: SearchProblem):
             return []
         
         #Extracts information from the current node
-        state, moves = fringe.pop()
-
+        state, moves, cost= fringe.pop()
+        del fringe_states[state]
 
         #Found goal and returns list of moves
         if problem.isGoalState(state):
@@ -212,32 +207,25 @@ def uniformCostSearch(problem: SearchProblem):
             
             #Grabs succesors of current node
             succesors = problem.getSuccessors(state)
-            #Stores variation of move list
-            temp = []
-
-
+        
             #NEED TO ADD COST with path
 
             #Iterates over succesors
-            for child_state, choice, cost in succesors:
+            for child_state, choice, step_cost in succesors:
 
                 #Ensures we dont push already explored child nodes onto the stack
-                    #Converts the direction to a move
-                if choice == 'South':
-                    temp = moves +[s]
-                if choice == 'North':
-                    temp = moves +[n]
-                if choice == 'West':
-                    temp = moves +[w]
-                if choice == 'East':
-                    temp = moves +[e]
+                temp_move = moves + [choice]
+                temp_cost = cost + step_cost
                 
-                if child_state not in closed:
+                if child_state not in closed and child_state not in fringe_states:
+                    # if child state is not in closed and not in fringe, adds new node to queue
+                    fringe.push((child_state, temp_move, temp_cost), temp_cost)
+                    fringe_states[child_state] = temp_cost
 
-                    #Adds new node to stack
-                    fringe.push((child_state, temp), cost)
-                else:
-                    fringe.update((child_state, temp), cost)
+                elif child_state in fringe_states and temp_cost < fringe_states[child_state]:
+                    # if child state is in fringe and new cost is smaller, updates the cost to new one
+                    fringe.update((child_state, temp_move, temp_cost), temp_cost)
+                    fringe_states[child_state] = temp_cost
 
 
 def nullHeuristic(state, problem=None):
