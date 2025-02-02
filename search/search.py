@@ -207,7 +207,7 @@ def uniformCostSearch(problem: SearchProblem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
     closed = set() #stores the nodes that we have seen
-    fringe = util.PriorityQueue() #stores the current node that has the state and moves that led up to it
+    fringe = util.PriorityQueue() #stores the current node that has the state and moves that led up to it along with cost
     node = (problem.getStartState(), []) #creates start node
     fringe.push(node, 0) #push start node and cost into priority queue
 
@@ -267,6 +267,7 @@ def uniformCostSearch(problem: SearchProblem):
                 else:
                     fringe.update((child_state, temp), cost)
 
+
 def nullHeuristic(state, problem=None):
     """
     A heuristic function estimates the cost from the current state to the nearest
@@ -277,7 +278,66 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    closed = set() #stores the nodes that we have seen
+    fringe = util.PriorityQueueWithFunction(heuristic(problem.getStartState(), problem)) #stores the current node that has the state and moves that led up to it along with cost and heuristic
+    node = (problem.getStartState(), []) #creates start node
+    fringe.push((problem.getStartState(), problem)) #push start node and cost into priority queue
+
+    #Grabs the directions for the game
+    from game import Directions
+    s = Directions.SOUTH
+    w = Directions.WEST  
+    n = Directions.NORTH
+    e = Directions.EAST  
+
+    #Performs DFS
+    while(True):
+
+        #If stack is empty then failed
+        if fringe.isEmpty():
+            return []
+        
+        #Extracts information from the current node
+        state, moves = fringe.pop()
+
+
+        #Found goal and returns list of moves
+        if problem.isGoalState(state):
+            return moves
+
+        #Explores new node
+        if state not in closed:
+            #Adds to explored node list
+            closed.add(state)
+            
+            #Grabs succesors of current node
+            succesors = problem.getSuccessors(state)
+            #Stores variation of move list
+            temp = []
+
+
+            #NEED TO ADD COST with path
+
+            #Iterates over succesors
+            for child_state, choice, cost in succesors:
+
+                #Ensures we dont push already explored child nodes onto the stack
+                    #Converts the direction to a move
+                if choice == 'South':
+                    temp = moves +[s]
+                if choice == 'North':
+                    temp = moves +[n]
+                if choice == 'West':
+                    temp = moves +[w]
+                if choice == 'East':
+                    temp = moves +[e]
+                
+                if child_state not in closed:
+
+                    #Adds new node to stack
+                    fringe.push((child_state, temp))
+                else:
+                    fringe.push((child_state, temp))
 
 
 # Abbreviations

@@ -18,6 +18,10 @@ each level before the next level. In the queue its FIFO so each
 level gets added then explored.
 
 QS3.1:
+The cost function we implemented it just the cost to the next node.
+The way we use the cost function is we grab the cost to travel to a certain 
+node as well as adding up the previous costs to get to that node. That way 
+we get a total price for traversing to that node.
 
 
 
