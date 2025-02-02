@@ -93,13 +93,6 @@ def depthFirstSearch(problem: SearchProblem):
     node = (problem.getStartState(), []) #creates start node
     fringe.push(node) #push start node onto stack
 
-    #Grabs the directions for the game
-    from game import Directions
-    s = Directions.SOUTH
-    w = Directions.WEST  
-    n = Directions.NORTH
-    e = Directions.EAST  
-
     #Performs DFS
     while(True):
 
@@ -146,13 +139,6 @@ def breadthFirstSearch(problem: SearchProblem):
     node = (problem.getStartState(), []) #creates start node
     fringe.push(node) #push start node into queue
 
-    #Grabs the directions for the game
-    from game import Directions
-    s = Directions.SOUTH
-    w = Directions.WEST  
-    n = Directions.NORTH
-    e = Directions.EAST  
-
     #Performs DFS
     while(True):
 
@@ -183,15 +169,7 @@ def breadthFirstSearch(problem: SearchProblem):
                 #Ensures we dont push already explored child nodes onto the stack
                 if child_state not in closed:
 
-                    #Converts the direction to a move
-                    if choice == 'South':
-                        temp = moves +[s]
-                    if choice == 'North':
-                        temp = moves +[n]
-                    if choice == 'West':
-                        temp = moves +[w]
-                    if choice == 'East':
-                        temp = moves +[e]
+                    temp = moves + [choice]
                     
                     #Adds new node to stack
                     fringe.push((child_state, temp))
