@@ -130,15 +130,9 @@ def depthFirstSearch(problem: SearchProblem):
                 #Ensures we dont push already explored child nodes onto the stack
                 if child_state not in closed:
 
-                    #Converts the direction to a move
-                    if choice == 'South':
-                        temp = moves +[s]
-                    if choice == 'North':
-                        temp = moves +[n]
-                    if choice == 'West':
-                        temp = moves +[w]
-                    if choice == 'East':
-                        temp = moves +[e]
+                    # I think it just fine to add the choice to moves list
+                    # Just like ['South', 'South', 'North', 'South', 'East', ..., 'West']
+                    temp = moves + [choice]
                     
                     #Adds new node to stack
                     fringe.push((child_state, temp))
