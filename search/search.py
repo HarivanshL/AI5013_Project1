@@ -239,28 +239,24 @@ def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
     closed = set() #stores the nodes that we have seen
-    fringe = util.PriorityQueueWithFunction(heuristic) #stores the current node that has the state and moves that led up to it along with cost and heuristic
-    node = (problem.getStartState(), []) #creates start node
-    print(heuristic(problem.getStartState(), problem, []))
-    fringe.push((problem.getStartState(), problem)) #push start node and cost into priority queue
+    fringe = util.PriorityQueue() #stores the current node that has the state and moves that led up to it along with cost and heuristic
+    start_state = problem.getStartState()
+    node = (start_state, [], 0) #creates start node + node contains cost
+    print(heuristic(start_state, problem))
+    fringe.push(node, heuristic(start_state, problem))  #push start node and heuristic into priority queue
+                                                        # use heuristic as priority
 
-    #Grabs the directions for the game
-    from game import Directions
-    s = Directions.SOUTH
-    w = Directions.WEST  
-    n = Directions.NORTH
-    e = Directions.EAST  
+    fringe_states = {start_state: 0} # dictionary for checking states in fringe and their cost
 
-    #Performs DFS
+    #Performs A*
     while(True):
 
-        #If stack is empty then failed
+        #If priority queue is empty then failed
         if fringe.isEmpty():
             return []
         
         #Extracts information from the current node
-        state, moves = fringe.pop()
-
+        state, moves, cost = fringe.pop()
 
         #Found goal and returns list of moves
         if problem.isGoalState(state):
@@ -273,32 +269,28 @@ def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic):
             
             #Grabs succesors of current node
             succesors = problem.getSuccessors(state)
-            #Stores variation of move list
-            temp = []
-
 
             #NEED TO ADD COST with path
 
             #Iterates over succesors
-            for child_state, choice, cost in succesors:
+            for child_state, choice, step_cost in succesors:
 
                 #Ensures we dont push already explored child nodes onto the stack
-                    #Converts the direction to a move
-                if choice == 'South':
-                    temp = moves +[s]
-                if choice == 'North':
-                    temp = moves +[n]
-                if choice == 'West':
-                    temp = moves +[w]
-                if choice == 'East':
-                    temp = moves +[e]
+                temp_move = moves + [choice]
+                temp_cost = cost + step_cost
+                priority = temp_cost + heuristic(child_state, problem)
                 
-                if child_state not in closed:
+                if child_state not in closed and child_state not in fringe_states:
 
-                    #Adds new node to stack
-                    fringe.push((child_state, temp))
-                else:
-                    fringe.push((child_state, temp))
+                    #Adds new node to priority queue
+                    fringe.push((child_state, temp_move, temp_cost), priority=priority)
+                    # add new status
+                    fringe_states[child_state] = temp_cost
+                
+                elif child_state in fringe_states and temp_cost < fringe_states[child_state]:
+                    fringe.update((child_state, temp_move, temp_cost), priority=priority)
+                    # update the status
+                    fringe_states[child_state] = temp_cost
 
 
 # Abbreviations
