@@ -213,7 +213,7 @@ def uniformCostSearch(problem: SearchProblem):
             #Iterates over succesors
             for child_state, choice, step_cost in succesors:
 
-                #Ensures we dont push already explored child nodes onto the stack
+                #Ensures we dont push already explored child nodes into the queue
                 temp_move = moves + [choice]
                 temp_cost = cost + step_cost
                 

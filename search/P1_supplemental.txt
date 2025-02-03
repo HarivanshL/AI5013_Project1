@@ -18,17 +18,33 @@ each level before the next level. In the queue its FIFO so each
 level gets added then explored.
 
 QS3.1:
-The cost function we implemented it just the cost to the next node.
+The cost function we implemented it is just the cost to the next node.
 The way we use the cost function is we grab the cost to travel to a certain 
 node as well as adding up the previous costs to get to that node. That way 
-we get a total price for traversing to that node.
+we get a total price for traversing to that node. We also update the cost 
+of a node if it is found again.
 
 
 
 QS4.1:
+The null heuristic does not provide any heuristic for reaching the target goal 
+whereas the mahattan distance heuristic provides us with the manhattan distance 
+to the goal. This is what we use to determine the priorit of traversing a node. 
+Null heuristic does not give the optimal solution. It gives us 620 search nodes 
+expanded whereas the manhattan distance heuristic gives us 549 nodes expanded which 
+is significantly less. That makes mahattan distance a better heuristic and it gives 
+us some idea of where to go whereas using the null heuristic does not provide any 
+information about how best to reach the goal.
+
+QS4.2
+For the different search functions DFS takes a very long time and finishes with the 
+highest cost. BFS has a significantly smaller cost than DFS but has 
+more nodes expanded. UCS and A* also had the exact same performance as BFS. All 
+three found the optimal path with the least cost, but more nodes expanded than DFS.
 
 
 QS5.1:
+The state represenation we chose is the start position and a tuple of visited corners
 
 
 QS5.2:
