@@ -59,3 +59,15 @@ QS6.1:
 
 
 QS7.1:
+
+QS8.1:
+
+Strengths
+- BFS ensures that we find the shortest path to the closest food dot in a reasonable time.
+- BFS explores in layers, therefore it will always find the nearest dot.
+- The implementation is simple.
+
+Weaknesses
+- Even though it finds the nearest dot efficiently, pacman may take an inefficient overall route.
+  Becuase choosing the closest dot does not guarantee the shortest path to collect all dots.
+- If pacman leaves some dots in an area where hard to reach when it moves to other dot, it may cause a long detour later.
