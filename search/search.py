@@ -94,9 +94,9 @@ def depthFirstSearch(problem: SearchProblem):
     fringe.push(node) #push start node onto stack
 
     #Performs DFS
-    while(True):
+    while(not fringe.isEmpty()):
 
-        #If stack is empty then failed
+        #If stack is empty then failed, return empty list
         if fringe.isEmpty():
             return []
         
@@ -122,9 +122,8 @@ def depthFirstSearch(problem: SearchProblem):
 
                 #Ensures we dont push already explored child nodes onto the stack
                 if child_state not in closed:
-
-                    # I think it just fine to add the choice to moves list
-                    # Just like ['South', 'South', 'North', 'South', 'East', ..., 'West']
+                    
+                    #Adds choice to move list for child node
                     temp = moves + [choice]
                     
                     #Adds new node to stack
@@ -140,9 +139,9 @@ def breadthFirstSearch(problem: SearchProblem):
     fringe.push(node) #push start node into queue
 
     #Performs DFS
-    while(True):
+    while(not fringe.isEmpty()):
 
-        #If stack is empty then failed
+        #If stack is empty then failed, return empty list
         if fringe.isEmpty():
             return []
         
@@ -169,6 +168,7 @@ def breadthFirstSearch(problem: SearchProblem):
                 #Ensures we dont push already explored child nodes onto the stack
                 if child_state not in closed:
 
+                    #Adds choice to move list for child node
                     temp = moves + [choice]
                     
                     #Adds new node to stack
@@ -180,15 +180,15 @@ def uniformCostSearch(problem: SearchProblem):
     "*** YOUR CODE HERE ***"
     closed = set() #stores the nodes that we have seen
     fringe = util.PriorityQueue() #stores the current node that has the state and moves that led up to it along with cost
-    node = (problem.getStartState(), [], 0) #creates start node with cost
+    node = (problem.getStartState(), [], 0) #creates start node with state, moves, and cost
     fringe.push(node, 0) #push start node and cost into priority queue
 
     fringe_states = {problem.getStartState(): 0} # dictionary for tracking the cost of nodes in fringe
 
     #Performs DFS
-    while(True):
+    while(not fringe.isEmpty()):
 
-        #If stack is empty then failed
+        #If stack is empty then failed, return empty list
         if fringe.isEmpty():
             return []
         
@@ -213,8 +213,9 @@ def uniformCostSearch(problem: SearchProblem):
             #Iterates over succesors
             for child_state, choice, step_cost in succesors:
 
-                #Ensures we dont push already explored child nodes into the queue
+                #Adds choice to move list for child node
                 temp_move = moves + [choice]
+                #Adds cost to cost list for child node
                 temp_cost = cost + step_cost
                 
                 if child_state not in closed and child_state not in fringe_states:
@@ -249,7 +250,7 @@ def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic):
     fringe_states = {start_state: 0} # dictionary for checking states in fringe and their cost
 
     #Performs A*
-    while(True):
+    while(not fringe.isEmpty()):
 
         #If priority queue is empty then failed
         if fringe.isEmpty():
@@ -270,14 +271,14 @@ def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic):
             #Grabs succesors of current node
             succesors = problem.getSuccessors(state)
 
-            #NEED TO ADD COST with path
-
             #Iterates over succesors
             for child_state, choice, step_cost in succesors:
 
-                #Ensures we dont push already explored child nodes onto the stack
+                #Adds choice to move list for child node
                 temp_move = moves + [choice]
+                #Adds cost to cost list for child node
                 temp_cost = cost + step_cost
+                #Determines priority for child node
                 priority = temp_cost + heuristic(child_state, problem)
                 
                 if child_state not in closed and child_state not in fringe_states:
