@@ -545,7 +545,9 @@ class ClosestDotSearchAgent(SearchAgent):
         problem = AnyFoodSearchProblem(gameState)
 
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        # I tested dfs, bfs, ucs. bfs and ucs is much better than dfs. 
+        # so I choose bfs because I think it is the best for the grid which is unweighted
+        return search.bfs(problem)
 
 class AnyFoodSearchProblem(PositionSearchProblem):
     """
@@ -582,8 +584,22 @@ class AnyFoodSearchProblem(PositionSearchProblem):
 
         "*** YOUR CODE HERE ***"
         #util.raiseNotDefined()
-        return (food for food in self.food if food not in self.visited and x == food[0] and y == food[1])
+        # return (food for food in self.food if food not in self.visited and x == food[0] and y == food[1])
+        
+        # I found it from pacman.py
+        """
+        pacman.gameState.getFood():
 
+        "Returns a Grid of boolean food indicator variables.
+
+        Grids can be accessed via list notation, so to check
+        if there is food at (x,y), just call
+
+        currentFood = state.getFood()
+        if currentFood[x][y] == True: ..."
+        """
+        
+        return self.food[x][y] # if there is food at this position, returns True
 
 def mazeDistance(point1: Tuple[int, int], point2: Tuple[int, int], gameState: pacman.GameState) -> int:
     """
