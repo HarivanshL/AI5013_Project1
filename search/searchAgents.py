@@ -306,8 +306,6 @@ class CornersProblem(search.SearchProblem):
         """
         "*** YOUR CODE HERE ***"
         position, visited_corners = state
-
-        # print(f"Checking goal state: {state}, Visited corners: {visited_corners}")
         
         # if current position is in corner put the position in visited corners tuple
         if position in self.corners and position not in visited_corners:
@@ -394,7 +392,8 @@ def cornersHeuristic(state: Any, problem: CornersProblem):
     unvisited_corners = [corner for corner in corners if corner not in visited_corners]
 
     if unvisited_corners:
-       return max(util.manhattanDistance(position, corner) for corner in unvisited_corners) #+ min(util.manhattanDistance(position, corner) for corner in unvisited_corners)
+       return max(util.manhattanDistance(position, corner) for corner in unvisited_corners) 
+        #+ min(util.manhattanDistance(position, corner) for corner in unvisited_corners)
         #return max(mazeDistance(position, corner) for corner in unvisited_corners) 
 
         #return max(( ((position[0] - corner[0]) ** 2 + (position[1] - corner[1]) ** 2 ) ** 0.5) for corner in unvisited_corners) 
@@ -498,23 +497,13 @@ def foodHeuristic(state: Tuple[Tuple, List[List]], problem: FoodSearchProblem):
     position, foodGrid = state
     "*** YOUR CODE HERE ***"
 
-    #corners = problem.corners # These are the corner coordinates
-    #walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
-
     # ManhattanDistance heuristic
     food_list = foodGrid.asList()
-    #print(food_list)
-    #food_list = [food for food in food_list if food == True]
-    #unvisited_corners = [corner for corner in corners if corner not in visited_corners]
 
-    #if unvisited_corners:
+
+    #Search distance for food locations:
     return max((util.manhattanDistance(position, food_location) for food_location in food_list), default=0) 
-        #return max(( ((position[0] - corner[0]) ** 2 + (position[1] - corner[1]) ** 2 ) ** 0.5) for corner in unvisited_corners) 
-       #return (abs( xy1[0] - xy2[0] ) + abs( xy1[1] - xy2[1] )) ** 0.5
-    
-    #else:
-        #return 0
-    return 0
+
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
@@ -583,10 +572,7 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         x,y = state
 
         "*** YOUR CODE HERE ***"
-        #util.raiseNotDefined()
-        # return (food for food in self.food if food not in self.visited and x == food[0] and y == food[1])
-        
-        # I found it from pacman.py
+
         """
         pacman.gameState.getFood():
 
