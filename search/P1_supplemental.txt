@@ -48,7 +48,12 @@ The state represenation we chose is the start position and a tuple of visited co
 
 
 QS5.2:
-
+In our implementation we for checking the goal state we determine if the current state 
+is in the corner and if so we increment the amount of corners found. If the length of 
+our corners tuple is four then we have found all corners and return true.
+To determine a succesor we first check each possible movement to determine if we hit 
+a wall. If we do not hit a wall we create a new state with that location and the move 
+required to reach there. We then add those states to the list and return the list.
 
 QS6.1:
 

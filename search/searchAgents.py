@@ -395,6 +395,8 @@ def cornersHeuristic(state: Any, problem: CornersProblem):
 
     if unvisited_corners:
        return max(util.manhattanDistance(position, corner) for corner in unvisited_corners) 
+        #return max(mazeDistance(position, corner) for corner in unvisited_corners) 
+
         #return max(( ((position[0] - corner[0]) ** 2 + (position[1] - corner[1]) ** 2 ) ** 0.5) for corner in unvisited_corners) 
        #return (abs( xy1[0] - xy2[0] ) + abs( xy1[1] - xy2[1] )) ** 0.5
     
@@ -579,7 +581,9 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         x,y = state
 
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        #util.raiseNotDefined()
+        return (food for food in self.food if food not in self.visited and x == food[0] and y == food[1])
+
 
 def mazeDistance(point1: Tuple[int, int], point2: Tuple[int, int], gameState: pacman.GameState) -> int:
     """
