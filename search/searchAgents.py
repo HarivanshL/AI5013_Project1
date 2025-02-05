@@ -307,10 +307,15 @@ class CornersProblem(search.SearchProblem):
         """
         "*** YOUR CODE HERE ***"
         position, visited_corners = state
+
+        # print(f"Checking goal state: {state}, Visited corners: {visited_corners}")
         
+        # I think this part cause redundancy
+        '''
         # if current position is in corner put the position in visited corners tuple
         if position in self.corners and position not in visited_corners:
             visited_corners = visited_corners + (position,)
+        '''
 
         # check if pacman visited all corners
         return len(visited_corners) == 4
@@ -388,22 +393,16 @@ def cornersHeuristic(state: Any, problem: CornersProblem):
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
-    # ManhattanDistance heuristic
-    position, visited_corners = state
-    unvisited_corners = [corner for corner in corners if corner not in visited_corners]
+    # maze distance heuristic
 
+    position, visited_corners = state
+    
+    unvisited_corners = [corner for corner in corners if corner not in visited_corners] # the list of corners which are not in the visited corners list
+    # if unvisited corner list is not empty, return the farthest
     if unvisited_corners:
         return max(mazeDistance(position, corner, problem.startingGameState) for corner in unvisited_corners)
-        #+ min(util.manhattanDistance(position, corner) for corner in unvisited_corners)
-        #return max(mazeDistance(position, corner) for corner in unvisited_corners) 
-
-        #return max(( ((position[0] - corner[0]) ** 2 + (position[1] - corner[1]) ** 2 ) ** 0.5) for corner in unvisited_corners) 
-       #return (abs( xy1[0] - xy2[0] ) + abs( xy1[1] - xy2[1] )) ** 0.5
-    
     else:
         return 0
-    
-    return 0 # Default to trivial solution
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
@@ -497,14 +496,14 @@ def foodHeuristic(state: Tuple[Tuple, List[List]], problem: FoodSearchProblem):
     """
     position, foodGrid = state
     "*** YOUR CODE HERE ***"
+    #maze distance heuristic
 
-    # ManhattanDistance heuristic
     food_list = foodGrid.asList()
-
-
-    #Search distance for food locations:
-    return max((mazeDistance(position, food_location, problem.startingGameState) for food_location in food_list), default=0) 
-
+    # return max maze distance 
+    if food_list:
+        return max((mazeDistance(position, food_location, problem.startingGameState) for food_location in food_list))
+    else:
+        0 
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
@@ -536,7 +535,7 @@ class ClosestDotSearchAgent(SearchAgent):
 
         "*** YOUR CODE HERE ***"
         # I tested dfs, bfs, ucs. bfs and ucs is much better than dfs. 
-        # so I choose bfs because I think it is the best for the grid which is unweighted
+        # Thus, I choose bfs because it explores in layer, so it always finds the nearest dot.
         return search.bfs(problem)
 
 class AnyFoodSearchProblem(PositionSearchProblem):
@@ -573,7 +572,7 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         x,y = state
 
         "*** YOUR CODE HERE ***"
-
+        # I found it from pacman.py
         """
         pacman.gameState.getFood():
 
@@ -585,7 +584,7 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         currentFood = state.getFood()
         if currentFood[x][y] == True: ..."
         """
-        
+
         return self.food[x][y] # if there is food at this position, returns True
 
 def mazeDistance(point1: Tuple[int, int], point2: Tuple[int, int], gameState: pacman.GameState) -> int:

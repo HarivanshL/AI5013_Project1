@@ -87,16 +87,15 @@ def depthFirstSearch(problem: SearchProblem):
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     """
     "*** YOUR CODE HERE ***"
-    
     closed = set() #stores the nodes that we have seen
     fringe = util.Stack() #stores the current node that has the state and moves that led up to it
     node = (problem.getStartState(), []) #creates start node
     fringe.push(node) #push start node onto stack
 
     #Performs DFS
-    while(not fringe.isEmpty()):
+    while(True):
 
-        #If stack is empty then failed, return empty list
+        #If stack is empty then failed
         if fringe.isEmpty():
             return []
         
@@ -114,16 +113,15 @@ def depthFirstSearch(problem: SearchProblem):
             
             #Grabs succesors of current node
             succesors = problem.getSuccessors(state)
-            #Stores variation of move list
-            temp = []
 
             #Iterates over succesors
             for child_state, choice, cost in succesors:
 
                 #Ensures we dont push already explored child nodes onto the stack
                 if child_state not in closed:
-                    
-                    #Adds choice to move list for child node
+
+                    # I think it just fine to add the choice to moves list
+                    # Just like ['South', 'South', 'North', 'South', 'East']
                     temp = moves + [choice]
                     
                     #Adds new node to stack
@@ -138,10 +136,10 @@ def breadthFirstSearch(problem: SearchProblem):
     node = (problem.getStartState(), []) #creates start node
     fringe.push(node) #push start node into queue
 
-    #Performs DFS
-    while(not fringe.isEmpty()):
+    #Performs BFS
+    while(True):
 
-        #If stack is empty then failed, return empty list
+        #If queue is empty then failed
         if fringe.isEmpty():
             return []
         
@@ -150,6 +148,7 @@ def breadthFirstSearch(problem: SearchProblem):
 
         #Found goal and returns list of moves
         if problem.isGoalState(state):
+            # print(moves)
             return moves
 
         #Explores new node
@@ -159,19 +158,17 @@ def breadthFirstSearch(problem: SearchProblem):
             
             #Grabs succesors of current node
             succesors = problem.getSuccessors(state)
-            #Stores variation of move list
-            temp = []
 
             #Iterates over succesors
             for child_state, choice, cost in succesors:
 
-                #Ensures we dont push already explored child nodes onto the stack
+                #Ensures we dont push already explored child nodes onto the queue
                 if child_state not in closed:
-
-                    #Adds choice to move list for child node
+                    
+                    # move to choosed direction
                     temp = moves + [choice]
                     
-                    #Adds new node to stack
+                    #Adds new node to queue
                     fringe.push((child_state, temp))
 
 
@@ -180,15 +177,15 @@ def uniformCostSearch(problem: SearchProblem):
     "*** YOUR CODE HERE ***"
     closed = set() #stores the nodes that we have seen
     fringe = util.PriorityQueue() #stores the current node that has the state and moves that led up to it along with cost
-    node = (problem.getStartState(), [], 0) #creates start node with state, moves, and cost
+    node = (problem.getStartState(), [], 0) #creates start node
     fringe.push(node, 0) #push start node and cost into priority queue
 
     fringe_states = {problem.getStartState(): 0} # dictionary for tracking the cost of nodes in fringe
 
-    #Performs DFS
-    while(not fringe.isEmpty()):
+    #Performs UCS
+    while(True):
 
-        #If stack is empty then failed, return empty list
+        #If priority queue is empty then failed
         if fringe.isEmpty():
             return []
         
@@ -197,7 +194,7 @@ def uniformCostSearch(problem: SearchProblem):
 
         #Found goal and returns list of moves
         if problem.isGoalState(state):
-            print(f"Cost: {cost}")
+            # print(f"cost: {cost}")
             return moves
 
         #Explores new node
@@ -207,15 +204,13 @@ def uniformCostSearch(problem: SearchProblem):
             
             #Grabs succesors of current node
             succesors = problem.getSuccessors(state)
-        
-            #NEED TO ADD COST with path
 
             #Iterates over succesors
             for child_state, choice, step_cost in succesors:
-
-                #Adds choice to move list for child node
+                
+                # move to choosed direction
                 temp_move = moves + [choice]
-                #Adds cost to cost list for child node
+                # compute the cost
                 temp_cost = cost + step_cost
                 
                 if child_state not in closed and child_state not in fringe_states:
@@ -228,13 +223,13 @@ def uniformCostSearch(problem: SearchProblem):
                     fringe.update((child_state, temp_move, temp_cost), temp_cost)
                     fringe_states[child_state] = temp_cost
 
-
 def nullHeuristic(state, problem=None):
     """
     A heuristic function estimates the cost from the current state to the nearest
     goal in the provided SearchProblem.  This heuristic is trivial.
     """
     return 0
+
 
 def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
@@ -250,7 +245,7 @@ def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic):
     fringe_states = {start_state: 0} # dictionary for checking states in fringe and their cost
 
     #Performs A*
-    while(not fringe.isEmpty()):
+    while(True):
 
         #If priority queue is empty then failed
         if fringe.isEmpty():
@@ -274,11 +269,11 @@ def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic):
             #Iterates over succesors
             for child_state, choice, step_cost in succesors:
 
-                #Adds choice to move list for child node
+                # move to choosed direction
                 temp_move = moves + [choice]
-                #Adds cost to cost list for child node
+                # compute the cost
                 temp_cost = cost + step_cost
-                #Determines priority for child node
+                # use sum of the cost and heuristic as priority
                 priority = temp_cost + heuristic(child_state, problem)
                 
                 if child_state not in closed and child_state not in fringe_states:
