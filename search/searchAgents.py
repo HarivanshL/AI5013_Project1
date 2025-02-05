@@ -290,6 +290,7 @@ class CornersProblem(search.SearchProblem):
                 print('Warning: no food in corner ' + str(corner))
         self._expanded = 0 # DO NOT CHANGE; Number of search nodes expanded
 
+        self.startingGameState = startingGameState
         # self.visited_corners = {} # dictionary for visited corners
 
     def getStartState(self):
@@ -392,7 +393,7 @@ def cornersHeuristic(state: Any, problem: CornersProblem):
     unvisited_corners = [corner for corner in corners if corner not in visited_corners]
 
     if unvisited_corners:
-       return max(util.manhattanDistance(position, corner) for corner in unvisited_corners) 
+        return max(mazeDistance(position, corner, problem.startingGameState) for corner in unvisited_corners)
         #+ min(util.manhattanDistance(position, corner) for corner in unvisited_corners)
         #return max(mazeDistance(position, corner) for corner in unvisited_corners) 
 
