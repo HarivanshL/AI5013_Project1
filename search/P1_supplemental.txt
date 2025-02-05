@@ -56,9 +56,17 @@ a wall. If we do not hit a wall we create a new state with that location and the
 required to reach there. We then add those states to the list and return the list.
 
 QS6.1:
-The heuristic we chose is the maze distance heuristic. 
+The heuristic we chose is the maze distance heuristic. This calculates the cost to a node following 
+the grid layout precisely. The strong points is that it can calculate the costs to goal states pretty 
+consistently and does not overestimate. The weak points is that it may take a very long time to compute 
+since it uses bfs and the heuristic is at best an equal estimate of the actual distance. It is consistent 
+because the distance from one node to the next node is never overestimated.
 
 QS7.1:
+We also used the same heuristic in question 7 as we did in 6, maze heuristic. Its strong points are the same, 
+calculates costs conistently and does not overestimate. Its weak points are also the same. It takes a while to 
+compute and the heuristic is at best an equal estimate of the actual distance. It is also consistent for the 
+same reason that the distance from one node to the next node is never overestimated.
 
 QS8.1:
 
