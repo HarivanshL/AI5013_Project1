@@ -56,7 +56,7 @@ a wall. If we do not hit a wall we create a new state with that location and the
 required to reach there. We then add those states to the list and return the list.
 
 QS6.1:
-
+The heuristic we chose is the maze distance heuristic. 
 
 QS7.1:
 
